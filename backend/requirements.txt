@@ -1,0 +1,6 @@
+Flask
+scikit-learn==1.2.2
+xgboost==1.7.5
+tensorflow==2.16.1
+numpy==1.26.4
+Pillow
