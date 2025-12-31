@@ -10,6 +10,7 @@ A full-stack web application featuring five distinct AI models for preliminary m
 The AI Diagnostic Suite is a comprehensive portfolio project that demonstrates the complete end-to-end lifecycle of a data science application. It begins with data exploration, cleaning, and model training in Jupyter Notebooks and culminates in a professional, interactive, and responsive web application. The project integrates five distinct machine learning and deep learning models to provide preliminary diagnostic insights for various medical conditions, showcasing skills in both data science and full-stack software engineering.
 
 -----
+Live Demo: https://aidiaganosticsuite-ed5txlmb8dtvykka7nd76m.streamlit.app/
 
 ## ✨ Key Features
 
