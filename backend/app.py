@@ -9,41 +9,54 @@ from PIL import Image
 app = Flask(__name__)
 CORS(app)
 
-# (Model initialization and loading code remains the same)
+# Global model variables
 ckd_model = None
 sepsis_model = None
-# ... etc.
+brain_tumor_model = None
+pneumonia_model = None
+lung_cancer_model = None
 
+# --- Model Loading ---
 try:
     print("--- Loading models... ---")
+    
     with open('medical_models/ckd_model.pkl', 'rb') as f:
         ckd_model = pickle.load(f)
     print("CKD model loaded.")
+    
     with open('medical_models/sepsis_model.pkl', 'rb') as f:
         sepsis_model = pickle.load(f)
     print("Sepsis model loaded.")
+    
     brain_tumor_model = tf.keras.models.load_model('medical_models/brain_tumor_model.keras')
     print("Brain Tumor model loaded.")
+    
     pneumonia_model = tf.keras.models.load_model('medical_models/pneumonia_model.keras')
     print("Pneumonia model loaded.")
+    
     lung_cancer_model = tf.keras.models.load_model('medical_models/lung_cancer_model.keras')
     print("Lung Cancer model loaded.")
+    
     print("\n--- All models loaded successfully. ---")
 except Exception as e:
     print(f"!!! A CRITICAL ERROR OCCURRED WHILE LOADING MODELS: {e} !!!")
 
-# (Helper functions and other endpoints remain the same)
+
+# --- Helper Functions ---
 def preprocess_image(image_file, target_size=(224, 224)):
-    # ... (function code) ...
     img = Image.open(image_file.stream).convert('RGB')
     img = img.resize(target_size)
     img_array = np.array(img)
     img_array = np.expand_dims(img_array, axis=0)
     return img_array
 
+# Classes
 BRAIN_TUMOR_CLASSES = ['Glioma Tumor', 'Meningioma Tumor', 'No Tumor', 'Pituitary Tumor']
 PNEUMONIA_CLASSES = ['Normal', 'Pneumonia']
 LUNG_CANCER_CLASSES = ['Benign', 'Malignant', 'Normal']
+
+
+# --- Routes ---
 
 @app.route('/')
 def home():
@@ -51,7 +64,6 @@ def home():
 
 @app.route('/predict/ckd', methods=['POST'])
 def predict_ckd():
-    # ... (this function is correct) ...
     if ckd_model is None: return jsonify({'error': 'CKD model is not loaded.'}), 500
     features = np.array(request.get_json(force=True)['features']).reshape(1, -1)
     prediction = ckd_model.predict(features)
@@ -59,7 +71,7 @@ def predict_ckd():
     return jsonify({'prediction': int(prediction[0]), 'probability_no_ckd': probability[0][0], 'probability_ckd': probability[0][1]})
 
 # ==============================================================================
-# CORRECTED SEPSIS PREDICTION FUNCTION (NOW EXPECTS 3 FEATURES)
+# CORRECTED SEPSIS PREDICTION FUNCTION (Expects 3 features)
 # ==============================================================================
 @app.route('/predict/sepsis', methods=['POST'])
 def predict_sepsis():
@@ -77,11 +89,11 @@ def predict_sepsis():
     return jsonify({'prediction': int(prediction[0]), 'probability_survived': probability[0][0], 'probability_died': probability[0][1]})
 
 # ==============================================================================
-# (The other image prediction functions remain the same)
+# IMAGE PREDICTION ENDPOINTS
 # ==============================================================================
+
 @app.route('/predict/brain_tumor', methods=['POST'])
 def predict_brain_tumor():
-    # ... (this function is correct) ...
     if brain_tumor_model is None: return jsonify({'error': 'Brain Tumor model not loaded.'}), 500
     file = request.files.get('file')
     if not file: return jsonify({'error': 'No file provided.'}), 400
@@ -91,7 +103,6 @@ def predict_brain_tumor():
 
 @app.route('/predict/pneumonia', methods=['POST'])
 def predict_pneumonia():
-    # ... (this function is correct) ...
     if pneumonia_model is None: return jsonify({'error': 'Pneumonia model not loaded.'}), 500
     file = request.files.get('file')
     if not file: return jsonify({'error': 'No file provided.'}), 400
@@ -103,7 +114,6 @@ def predict_pneumonia():
 
 @app.route('/predict/lung_cancer', methods=['POST'])
 def predict_lung_cancer():
-    # ... (this function is correct) ...
     if lung_cancer_model is None: return jsonify({'error': 'Lung Cancer model not loaded.'}), 500
     file = request.files.get('file')
     if not file: return jsonify({'error': 'No file provided.'}), 400
@@ -111,6 +121,8 @@ def predict_lung_cancer():
     prediction = lung_cancer_model.predict(image)
     return jsonify({'prediction': LUNG_CANCER_CLASSES[np.argmax(prediction)], 'confidence': float(np.max(prediction))})
 
-# --- Run the App ---
+# --- Main Block (Updated for Render Deployment) ---
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Cloud platforms require listening on 0.0.0.0 and a dynamic PORT
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
