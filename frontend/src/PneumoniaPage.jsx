@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import apiClient from './api';
 import { Box, Button, Typography, CircularProgress, Grid, Paper, Divider, LinearProgress, Avatar, Tabs, Tab, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -35,7 +35,7 @@ function PneumoniaPage() {
     const formData = new FormData();
     formData.append('file', selectedFile);
     try {
-      const res = await axios.post('http://127.0.0.1:5000/predict/pneumonia', formData, {
+     const res = await apiClient.post('/predict/pneumonia', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setResult(res.data);

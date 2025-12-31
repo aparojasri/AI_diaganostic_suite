@@ -4,3 +4,8 @@ xgboost==1.7.5
 tensorflow==2.16.1
 numpy==1.26.4
 Pillow
+gunicorn
+streamlit
+pandas
+joblib
+opencv-python-headless

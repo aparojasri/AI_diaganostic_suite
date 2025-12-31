@@ -7,15 +7,17 @@ import HubIcon from '@mui/icons-material/Hub';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 // --- FINAL GITHUB URL ---
-// This now points to your specific repository.
+// This points to your specific repository.
 const GITHUB_BASE_URL = "https://github.com/aparojasri/AI_diaganostic_suite/blob/main/notebooks/";
 
+// --- REFINED MODEL LIST ---
+// Notebook names now match your project files exactly.
 const models = [
-  { name: "CKD Diagnosis", notebook: "1_CKD_Diagnosis.ipynb" },
-  { name: "Sepsis Prediction", notebook: "2_Sepsis_Prediction.ipynb" },
-  { name: "Brain Tumor MRI", notebook: "3_Brain_Tumor_Classification.ipynb" },
-  { name: "Pneumonia X-Ray", notebook: "4_Pneumonia_Detection.ipynb" },
-  { name: "Lung Cancer CT", notebook: "5_Lung_Cancer_Detection.ipynb" }
+  { name: "CKD Diagnosis", notebook: "ckdisease.ipynb" },
+  { name: "Sepsis Prediction", notebook: "sepsis.ipynb" },
+  { name: "Brain Tumor MRI", notebook: "brain-tumor.ipynb" },
+  { name: "Pneumonia X-Ray", notebook: "pneumonia.ipynb" },
+  { name: "Lung Cancer CT", notebook: "lung-cancer-detection.ipynb" }
 ];
 
 function AboutPage() {

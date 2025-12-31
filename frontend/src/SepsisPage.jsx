@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import apiClient from './api';
 import { Box, Button, TextField, Typography, CircularProgress, Grid, Paper, Divider, LinearProgress, Accordion, AccordionSummary, AccordionDetails, Tabs, Tab } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -26,7 +26,7 @@ function SepsisPage() {
     setResult(null);
     const featureValues = sepsisFeatures.map(feature => parseFloat(formData[feature]) || 0);
     try {
-      const res = await axios.post('http://127.0.0.1:5000/predict/sepsis', { features: featureValues });
+      const res = await apiClient.post('/predict/sepsis', { features: featureValues });
       setResult(res.data);
     } catch (error) {
       console.error("Error making prediction", error);
